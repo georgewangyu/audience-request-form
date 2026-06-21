@@ -19,6 +19,34 @@ const sources = [
 
 type Status = "idle" | "submitting" | "success" | "error";
 
+type ErrorResponse = {
+  error?: string;
+  issues?: Record<string, string[] | undefined>;
+};
+
+const issueLabels: Record<string, string> = {
+  request: "Your request",
+  why: "Why it matters",
+  context: "Link or context",
+  handle: "Handle",
+};
+
+async function errorMessageFor(response: Response) {
+  if (response.status !== 400) {
+    return "Something went wrong. Try again or DM George directly.";
+  }
+
+  const body = (await response.json().catch(() => null)) as ErrorResponse | null;
+  const fieldMessages = Object.entries(body?.issues || {})
+    .flatMap(([field, messages]) =>
+      (messages || []).map((message) => `${issueLabels[field] || field}: ${message}`),
+    );
+
+  return fieldMessages.length > 0
+    ? fieldMessages.join(" ")
+    : body?.error || "Please check the form and try again.";
+}
+
 export default function Home() {
   const [requestType, setRequestType] = useState("video-request");
   const [source, setSource] = useState("instagram");
@@ -50,7 +78,9 @@ export default function Home() {
       });
 
       if (!response.ok) {
-        throw new Error("Request failed.");
+        setStatus("error");
+        setError(await errorMessageFor(response));
+        return;
       }
 
       formElement.reset();
@@ -125,6 +155,8 @@ export default function Home() {
           <textarea
             name="request"
             placeholder="I want a video about how you..."
+            minLength={10}
+            maxLength={1500}
             required
           />
         </label>
@@ -135,6 +167,8 @@ export default function Home() {
             className="short"
             name="why"
             placeholder="What problem would this solve or what would it help you understand?"
+            minLength={5}
+            maxLength={1000}
             required
           />
         </label>
