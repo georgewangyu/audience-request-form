@@ -13,11 +13,13 @@ The public site is only a form:
 
 - request type
 - source platform
+- desired outcome: make a video, build/change something, answer a question, or
+  not sure
+- specificity: rough idea, clear request, or exact change/bug
 - request text
 - why it matters
 - optional source link/context
-- optional handle for attribution or follow-up
-- consent checkbox for anonymous quoting
+- optional handle; blank means anonymous
 
 The viewer should not see the private GitHub queue, issue preview, triage
 labels, or agent workflow. After submit, they only see a success state.
@@ -35,6 +37,23 @@ Public form
 There is no database and no long-running backend. There is still a server-side
 function because the GitHub token must not be exposed in browser JavaScript.
 Vercel deploys Next.js `app/api/*/route.ts` files as functions.
+
+## Orchestrator Shape
+
+Submissions are structured so a future orchestrator can judge what happens
+next:
+
+- `requestType`: viewer-facing classification
+- `desiredOutcome`: maps to `route:content-candidate`,
+  `route:build-candidate`, `route:answer-candidate`, or
+  `route:needs-human-review`
+- `specificity`: helps decide whether the request is actionable or needs human
+  clarification
+- `why`: preserves user pain/context for ranking and dedupe
+
+The initial issue still gets `status:needs-triage`; the orchestrator can then
+promote it to can-start-now, needs-human-review, content-candidate,
+build-candidate, answer-candidate, ignore, or future categories.
 
 ## Public Repo vs Private Repo
 

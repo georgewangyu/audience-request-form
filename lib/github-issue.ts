@@ -14,6 +14,26 @@ const requestTypeTitles: Record<AudienceRequest["requestType"], string> = {
   question: "Question",
 };
 
+const desiredOutcomeTitles: Record<AudienceRequest["desiredOutcome"], string> = {
+  "make-video": "Make a video",
+  "build-or-change": "Build or change something",
+  "answer-question": "Answer the question",
+  "not-sure": "Not sure",
+};
+
+const routeLabels: Record<AudienceRequest["desiredOutcome"], string> = {
+  "make-video": "route:content-candidate",
+  "build-or-change": "route:build-candidate",
+  "answer-question": "route:answer-candidate",
+  "not-sure": "route:needs-human-review",
+};
+
+const specificityTitles: Record<AudienceRequest["specificity"], string> = {
+  "rough-idea": "Rough idea",
+  "clear-request": "Clear request",
+  "exact-change": "Exact change or bug",
+};
+
 function compactTitle(input: string) {
   const singleLine = input.replace(/\s+/g, " ").trim();
   return singleLine.length > 78 ? `${singleLine.slice(0, 75)}...` : singleLine;
@@ -28,17 +48,15 @@ export function issueLabels(request: AudienceRequest) {
     "audience-request",
     "status:needs-triage",
     requestTypeLabels[request.requestType],
+    routeLabels[request.desiredOutcome],
+    `specificity:${request.specificity}`,
     `source:${request.source}`,
-    request.quoteConsent ? "privacy:anonymous-quote-ok" : "privacy:no-quote",
   ];
 }
 
 export function issueBody(request: AudienceRequest) {
-  const handle = request.handle || "_Not provided_";
+  const handle = request.handle || "_Anonymous / not provided_";
   const context = request.context || "_Not provided_";
-  const quoteConsent = request.quoteConsent
-    ? "Anonymous quote allowed"
-    : "Do not quote";
 
   return [
     "## Audience request",
@@ -46,7 +64,12 @@ export function issueBody(request: AudienceRequest) {
     `**Type:** ${requestTypeTitles[request.requestType]}`,
     `**Source:** ${request.source}`,
     `**Handle:** ${handle}`,
-    `**Quote consent:** ${quoteConsent}`,
+    "",
+    "## Orchestrator signals",
+    "",
+    `**Desired outcome:** ${desiredOutcomeTitles[request.desiredOutcome]}`,
+    `**Suggested route:** ${routeLabels[request.desiredOutcome]}`,
+    `**Specificity:** ${specificityTitles[request.specificity]}`,
     "",
     "## Request",
     "",
@@ -63,9 +86,9 @@ export function issueBody(request: AudienceRequest) {
     "## Triage checklist",
     "",
     "- [ ] Deduplicate against similar requests",
-    "- [ ] Decide content vs product vs ignore",
+    "- [ ] Classify as can-start-now, needs-human-review, content-candidate, build-candidate, answer-candidate, or ignore",
     "- [ ] Add evidence or source links if useful",
-    "- [ ] Create a linked implementation/content brief if accepted",
+    "- [ ] Create a linked implementation issue or content brief if accepted",
   ].join("\n");
 }
 

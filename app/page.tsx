@@ -17,12 +17,26 @@ const sources = [
   ["other", "Other"],
 ] as const;
 
+const desiredOutcomes = [
+  ["make-video", "Make a video"],
+  ["build-or-change", "Build/change something"],
+  ["answer-question", "Answer this"],
+  ["not-sure", "Not sure"],
+] as const;
+
+const specificityLevels = [
+  ["rough-idea", "Rough idea"],
+  ["clear-request", "Clear request"],
+  ["exact-change", "Exact change or bug"],
+] as const;
+
 type Status = "idle" | "submitting" | "success" | "error";
 
 export default function Home() {
   const [requestType, setRequestType] = useState("video-request");
   const [source, setSource] = useState("instagram");
-  const [quoteConsent, setQuoteConsent] = useState(true);
+  const [desiredOutcome, setDesiredOutcome] = useState("make-video");
+  const [specificity, setSpecificity] = useState("rough-idea");
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
 
@@ -35,7 +49,8 @@ export default function Home() {
     const payload = {
       requestType,
       source,
-      quoteConsent,
+      desiredOutcome,
+      specificity,
       request: String(form.get("request") || ""),
       why: String(form.get("why") || ""),
       context: String(form.get("context") || ""),
@@ -58,7 +73,8 @@ export default function Home() {
     event.currentTarget.reset();
     setRequestType("video-request");
     setSource("instagram");
-    setQuoteConsent(true);
+    setDesiredOutcome("make-video");
+    setSpecificity("rough-idea");
     setStatus("success");
   }
 
@@ -69,7 +85,7 @@ export default function Home() {
           <div className="mark">G</div>
           <span>Audience Inbox</span>
         </div>
-        <span className="nav-note">Requests become GitHub issues for triage.</span>
+        <span className="nav-note">Send George a useful request.</span>
       </header>
 
       <section className="hero">
@@ -101,13 +117,45 @@ export default function Home() {
         </section>
 
         <section className="field">
-          <span className="label">Where did this come from?</span>
+          <span className="label">Where is this request coming from?</span>
           <div className="chips">
             {sources.map(([value, label]) => (
               <button
                 className={source === value ? "chip active" : "chip"}
                 key={value}
                 onClick={() => setSource(value)}
+                type="button"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="field">
+          <span className="label">What should George do with this?</span>
+          <div className="chips">
+            {desiredOutcomes.map(([value, label]) => (
+              <button
+                className={desiredOutcome === value ? "chip active" : "chip"}
+                key={value}
+                onClick={() => setDesiredOutcome(value)}
+                type="button"
+              >
+                {label}
+              </button>
+            ))}
+          </div>
+        </section>
+
+        <section className="field">
+          <span className="label">How specific is this?</span>
+          <div className="chips">
+            {specificityLevels.map(([value, label]) => (
+              <button
+                className={specificity === value ? "chip active" : "chip"}
+                key={value}
+                onClick={() => setSpecificity(value)}
                 type="button"
               >
                 {label}
@@ -137,8 +185,8 @@ export default function Home() {
 
         <div className="two">
           <label className="field">
-            <span className="label">Handle</span>
-            <input name="handle" placeholder="@optional" />
+            <span className="label">Handle optional</span>
+            <input name="handle" placeholder="Leave blank to stay anonymous" />
           </label>
           <label className="field">
             <span className="label">Link or context</span>
@@ -146,25 +194,7 @@ export default function Home() {
           </label>
         </div>
 
-        <label className="consent">
-          <span>
-            <strong>Anonymous quote allowed</strong>
-            <small>
-              If this becomes content, George can quote the request without
-              naming you.
-            </small>
-          </span>
-          <input
-            checked={quoteConsent}
-            onChange={(event) => setQuoteConsent(event.target.checked)}
-            type="checkbox"
-          />
-        </label>
-
         <div className="actions">
-          <p>
-            Do not include private details. Requests may become GitHub issues.
-          </p>
           <button disabled={status === "submitting"} type="submit">
             {status === "submitting" ? "Sending..." : "Send request"}
           </button>

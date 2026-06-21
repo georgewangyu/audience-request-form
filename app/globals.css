@@ -182,45 +182,11 @@ textarea:focus {
   display: none;
 }
 
-.consent {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 18px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  background: white;
-  padding: 14px 16px;
-}
-
-.consent strong {
-  display: block;
-  margin-bottom: 3px;
-  font-size: 14px;
-}
-
-.consent small,
-.actions p {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.35;
-}
-
-.consent input {
-  width: 22px;
-  min-height: 22px;
-  accent-color: var(--dark);
-}
-
 .actions {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
   gap: 16px;
-}
-
-.actions p {
-  margin: 0;
 }
 
 .actions button {
