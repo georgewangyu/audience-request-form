@@ -27,10 +27,11 @@ export default function Home() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const formElement = event.currentTarget;
     setStatus("submitting");
     setError("");
 
-    const form = new FormData(event.currentTarget);
+    const form = new FormData(formElement);
     const payload = {
       requestType,
       source,
@@ -41,22 +42,25 @@ export default function Home() {
       website: String(form.get("website") || ""),
     };
 
-    const response = await fetch("/api/submit", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    try {
+      const response = await fetch("/api/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (!response.ok) {
+      if (!response.ok) {
+        throw new Error("Request failed.");
+      }
+
+      formElement.reset();
+      setRequestType("video-request");
+      setSource("instagram");
+      setStatus("success");
+    } catch {
       setStatus("error");
       setError("Something went wrong. Try again or DM George directly.");
-      return;
     }
-
-    event.currentTarget.reset();
-    setRequestType("video-request");
-    setSource("instagram");
-    setStatus("success");
   }
 
   return (
