@@ -15,9 +15,12 @@ export const sourcePlatforms = [
   "other",
 ] as const;
 
+export const visibilityModes = ["public", "private"] as const;
+
 export const audienceRequestSchema = z.object({
   requestType: z.enum(requestTypes),
   source: z.enum(sourcePlatforms),
+  visibility: z.enum(visibilityModes).optional().default("public"),
   request: z
     .string()
     .trim()

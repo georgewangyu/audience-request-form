@@ -29,18 +29,22 @@ export function issueLabels(request: AudienceRequest) {
     "status:needs-triage",
     requestTypeLabels[request.requestType],
     `source:${request.source}`,
+    `visibility:${request.visibility}`,
   ];
 }
 
 export function issueBody(request: AudienceRequest) {
   const handle = request.handle || "_Anonymous / not provided_";
   const context = request.context || "_Not provided_";
+  const visibility =
+    request.visibility === "private" ? "Private to George" : "Public GitHub issue";
 
   return [
     "## Audience request",
     "",
     `**Type:** ${requestTypeTitles[request.requestType]}`,
     `**Source:** ${request.source}`,
+    `**Visibility:** ${visibility}`,
     `**Handle:** ${handle}`,
     "",
     "## Request",
@@ -68,7 +72,10 @@ export function issueBody(request: AudienceRequest) {
 export async function createGitHubIssue(request: AudienceRequest) {
   const token = process.env.GITHUB_TOKEN;
   const owner = process.env.GITHUB_OWNER;
-  const repo = process.env.GITHUB_REPO;
+  const repo =
+    request.visibility === "private"
+      ? process.env.GITHUB_PRIVATE_REPO
+      : process.env.GITHUB_REPO;
 
   if (!token || !owner || !repo) {
     throw new Error("Missing GitHub issue environment configuration.");

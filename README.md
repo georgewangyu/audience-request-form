@@ -13,6 +13,7 @@ The public site is only a form:
 
 - request type
 - source platform
+- visibility: public GitHub issue or private to George
 - request text
 - why it matters
 - optional source link/context
@@ -28,7 +29,7 @@ Public form
   -> POST /api/submit
   -> Vercel serverless function
   -> GitHub REST API
-  -> issue in GITHUB_OWNER/GITHUB_REPO
+  -> issue in GITHUB_OWNER/GITHUB_REPO or GITHUB_PRIVATE_REPO
 ```
 
 There is no database and no long-running backend. There is still a server-side
@@ -54,12 +55,17 @@ category.
 
 ## Public Repo vs Private Repo
 
-The app can create issues in the same public repo if the goal is transparent
-public requests. That means submissions may become public GitHub issues, so the
-form copy should avoid collecting sensitive personal details.
+The app supports two issue destinations:
 
-For private audience intake, set `GITHUB_REPO` to a private repository such as
-`audience-inbox`. The app itself can still be public.
+- public submissions go to `GITHUB_REPO`, currently the public
+  `audience-request-form` repo
+- private submissions go to `GITHUB_PRIVATE_REPO`, currently the private
+  `audience-private-intake` repo
+
+This is the reusable pattern for future public GitHub README projects: expose
+the public queue when transparency helps, but include a private route for
+requests that should not become visible GitHub issues. The public form should
+always explain the choice before submit.
 
 ## Environment
 
@@ -67,7 +73,8 @@ Copy `.env.example` to `.env.local` and set:
 
 - `GITHUB_TOKEN`: fine-grained token with Issues read/write on the target repo
 - `GITHUB_OWNER`: repository owner
-- `GITHUB_REPO`: repository where issues should be created
+- `GITHUB_REPO`: public issue destination
+- `GITHUB_PRIVATE_REPO`: private issue destination
 
 ## Local Development
 

@@ -63,6 +63,7 @@ export default function Home() {
     const payload = {
       requestType,
       source,
+      visibility: String(form.get("visibility") || "public"),
       request: String(form.get("request") || ""),
       why: String(form.get("why") || ""),
       context: String(form.get("context") || ""),
@@ -111,7 +112,8 @@ export default function Home() {
           buried in comments.
         </p>
         <p className="public-note">
-          Valid submissions may become public GitHub issues, so skip private details.
+          Choose public if it can become a visible GitHub issue, or private if
+          only George should see it.
         </p>
       </section>
 
@@ -149,6 +151,14 @@ export default function Home() {
             ))}
           </div>
         </section>
+
+        <label className="field">
+          <span className="label">Visibility</span>
+          <select name="visibility" defaultValue="public">
+            <option value="public">Public GitHub issue</option>
+            <option value="private">Private to George</option>
+          </select>
+        </label>
 
         <label className="field">
           <span className="label">Your request</span>
