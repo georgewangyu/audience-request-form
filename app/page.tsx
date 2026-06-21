@@ -76,6 +76,9 @@ export default function Home() {
           requests become work George can actually review instead of getting
           buried in comments.
         </p>
+        <p className="public-note">
+          Valid submissions may become public GitHub issues, so skip private details.
+        </p>
       </section>
 
       <form className="request-form" onSubmit={onSubmit}>

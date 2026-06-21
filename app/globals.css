@@ -96,6 +96,12 @@ h1 {
   line-height: 1.45;
 }
 
+.hero .public-note {
+  margin-top: 10px;
+  font-size: 14px;
+  font-weight: 750;
+}
+
 .request-form {
   display: grid;
   gap: 17px;
