@@ -1,5 +1,8 @@
 # Audience Request Form
 
+[Live form](https://audience-request-form.vercel.app) ·
+[Public request issues](https://github.com/georgewangyu/audience-request-form/issues)
+
 ## One-Pager
 
 Audience Request Form is a tiny Vercel site that lets Instagram, TikTok, or
