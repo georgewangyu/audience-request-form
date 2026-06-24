@@ -1,6 +1,6 @@
 # Audience Request Form
 
-[Live form](https://audience-request-form.vercel.app) ·
+[Live form](https://requests.snackoverflowgeorge.com) ·
 [Public request issues](https://github.com/georgewangyu/audience-request-form/issues)
 
 ## One-Pager

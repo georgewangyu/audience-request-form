@@ -1,0 +1,26 @@
+{
+  "redirects": [
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "audience-request-form.vercel.app"
+        }
+      ],
+      "destination": "https://requests.snackoverflowgeorge.com",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "audience-request-form.vercel.app"
+        }
+      ],
+      "destination": "https://requests.snackoverflowgeorge.com/:path*",
+      "permanent": true
+    }
+  ]
+}
