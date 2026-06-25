@@ -247,11 +247,24 @@ textarea:focus {
   color: var(--danger);
 }
 
+.creator-links-block {
+  margin-top: 22px;
+}
+
+.creator-links-title {
+  margin: 0 0 9px;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
 .creator-links {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 22px;
 }
 
 .creator-links a {

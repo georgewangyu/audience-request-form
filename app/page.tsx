@@ -219,13 +219,16 @@ export default function Home() {
         {status === "error" ? <div className="notice error">{error}</div> : null}
       </form>
 
-      <nav className="creator-links" aria-label="George links">
-        {creatorLinks.map(([label, href]) => (
-          <a href={href} key={label}>
-            {label}
-          </a>
-        ))}
-      </nav>
+      <div className="creator-links-block">
+        <p className="creator-links-title">Created by George</p>
+        <nav className="creator-links" aria-label="George links">
+          {creatorLinks.map(([label, href]) => (
+            <a href={href} key={label}>
+              {label}
+            </a>
+          ))}
+        </nav>
+      </div>
     </main>
   );
 }
