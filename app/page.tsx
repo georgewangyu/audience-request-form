@@ -17,6 +17,16 @@ const sources = [
   ["other", "Other"],
 ] as const;
 
+const creatorLinks = [
+  ["GitHub", "https://github.com/georgewangyu"],
+  ["X", "https://x.com/georgewangyu"],
+  ["Email", "mailto:hellogeorgehq@gmail.com"],
+  ["Instagram", "https://www.instagram.com/snackoverflowgeorge/"],
+  ["TikTok", "https://www.tiktok.com/@snackoverflowgeorge"],
+  ["YouTube", "https://www.youtube.com/@snackoverflowgeorge"],
+  ["LinkedIn", "https://www.linkedin.com/in/georgewangyu/"],
+] as const;
+
 type Status = "idle" | "submitting" | "success" | "error";
 
 type ErrorResponse = {
@@ -208,6 +218,14 @@ export default function Home() {
 
         {status === "error" ? <div className="notice error">{error}</div> : null}
       </form>
+
+      <nav className="creator-links" aria-label="George links">
+        {creatorLinks.map(([label, href]) => (
+          <a href={href} key={label}>
+            {label}
+          </a>
+        ))}
+      </nav>
     </main>
   );
 }

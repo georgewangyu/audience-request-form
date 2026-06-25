@@ -247,6 +247,29 @@ textarea:focus {
   color: var(--danger);
 }
 
+.creator-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 22px;
+}
+
+.creator-links a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: white;
+  color: var(--muted);
+  padding: 8px 11px;
+  font-size: 12px;
+  font-weight: 850;
+  text-decoration: none;
+}
+
+.creator-links a:hover {
+  border-color: var(--dark);
+  color: var(--ink);
+}
+
 @media (max-width: 720px) {
   .page {
     width: calc(100vw - 24px);
