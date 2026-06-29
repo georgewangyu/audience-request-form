@@ -65,10 +65,11 @@ The app supports two issue destinations:
 - private submissions go to `GITHUB_PRIVATE_REPO`, currently the private
   `audience-private-intake` repo
 
-This is the reusable pattern for future public GitHub README projects: expose
-the public queue when transparency helps, but include a private route for
-requests that should not become visible GitHub issues. The public form should
-always explain the choice before submit.
+This is the reusable pattern for future radar-style public sites: public
+submissions go to `audience-request-form`, private submissions go to
+`audience-private-intake`, and the source app is preserved with a
+`source-repo:<repo-name>` label plus a Source repo line in the issue body. The
+public form should always explain the choice before submit.
 
 ## Environment
 

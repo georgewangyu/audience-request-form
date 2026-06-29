@@ -1,5 +1,7 @@
 import type { AudienceRequest } from "./request-schema";
 
+const sourceRepo = "audience-request-form";
+
 const requestTypeLabels: Record<AudienceRequest["requestType"], string> = {
   "video-request": "type:video-request",
   "feature-request": "type:feature-request",
@@ -26,6 +28,7 @@ export function issueTitle(request: AudienceRequest) {
 export function issueLabels(request: AudienceRequest) {
   return [
     "audience-request",
+    `source-repo:${sourceRepo}`,
     "status:needs-triage",
     requestTypeLabels[request.requestType],
     `source:${request.source}`,
@@ -43,6 +46,7 @@ export function issueBody(request: AudienceRequest) {
     "## Audience request",
     "",
     `**Type:** ${requestTypeTitles[request.requestType]}`,
+    `**Source repo:** ${sourceRepo}`,
     `**Source:** ${request.source}`,
     `**Visibility:** ${visibility}`,
     `**Handle:** ${handle}`,
